@@ -1,51 +1,80 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vakit Saat — Gizlilik Politikası / Privacy Policy / سياسة الخصوصية</title>
+<meta name="theme-color" content="#0a1018" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f7f9" media="(prefers-color-scheme: light)">
+<title>Ezan Vakti — Gizlilik Politikası / Privacy Policy / سياسة الخصوصية</title>
 <style>
-  :root { color-scheme: light dark; }
+  /* THEME TOKENS — index.html ile aynı anahtar (localStorage 'ezan-theme'). */
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#0a1018; --fg:#eceff1; --card:#101820; --line:#ffffff12;
+    --card-h:#ffffff; --card-p:#cfd8dc; --mut:#607d8b;
+    --tab-fg:#b0bec5; --tab-line:#4da8da33;
+    --tab-act-bg:#4da8da22; --act:#4da8da; --acc:#4da8da;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg:#f5f7f9; --fg:#1a232b; --card:#ffffff; --line:#00000014;
+    --card-h:#102027; --card-p:#37474f; --mut:#546e7a;
+    --tab-fg:#546e7a; --tab-line:rgba(20,40,64,.16);
+    --tab-act-bg:rgba(22,115,177,.10); --act:#1673b1; --acc:#1673b1;
+  }
   * { box-sizing: border-box; }
   body {
     margin: 0; padding: 2rem 1rem 4rem;
     font-family: -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", sans-serif;
-    line-height: 1.65; background: #0a1018; color: #eceff1;
+    line-height: 1.65; background: var(--bg); color: var(--fg);
+    transition: background .35s ease, color .35s ease;
   }
   .wrap { max-width: 720px; margin: 0 auto; }
   h1 { font-size: 1.25rem; letter-spacing: .02em; }
   .tabs { display: flex; gap: .5rem; margin: 1.5rem 0; flex-wrap: wrap; }
-  .home { margin-top: 1rem; }
-  .home a { color: #607d8b; text-decoration: none; font-size: .9rem; }
-  .home a:hover { color: #4da8da; }
-  .tabs button {
-    padding: .5rem 1.1rem; border-radius: 999px; border: 1px solid #4da8da33;
-    background: transparent; color: #b0bec5; font-size: .95rem; cursor: pointer;
+  .home { margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; }
+  .home a { color: var(--mut); text-decoration: none; font-size: .9rem; }
+  .home a:hover { color: var(--acc); }
+  .theme-btn {
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: .95rem;
+    background: var(--card); border: 1px solid var(--line); color: var(--fg);
+    display: grid; place-items: center; transition: .25s;
   }
-  .tabs button.active { background: #4da8da22; color: #4da8da; border-color: #4da8da; }
+  .theme-btn:hover { border-color: var(--acc); transform: rotate(20deg); }
+  .tabs button {
+    padding: .5rem 1.1rem; border-radius: 999px; border: 1px solid var(--tab-line);
+    background: transparent; color: var(--tab-fg); font-size: .95rem; cursor: pointer;
+  }
+  .tabs button.active { background: var(--tab-act-bg); color: var(--act); border-color: var(--act); }
   .page { display: none; }
   .page.active { display: block; }
-  .meta { color: #607d8b; font-size: .85rem; }
+  .meta { color: var(--mut); font-size: .85rem; }
   .card {
-    background: #101820; border: 1px solid #ffffff12; border-radius: 12px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
     padding: 1rem 1.2rem; margin: 0 0 .9rem;
+    transition: background .35s ease, border-color .35s ease;
   }
-  .card h2 { font-size: 1rem; margin: 0 0 .4rem; color: #ffffff; }
-  .card p { margin: 0; color: #cfd8dc; font-size: .95rem; }
-  .contact { margin-top: 1.6rem; color: #607d8b; font-size: .9rem; }
-  a { color: #4da8da; }
-  @media (prefers-color-scheme: light) {
-    body { background: #f5f7f9; color: #1a232b; }
-    .card { background: #ffffff; border-color: #00000014; }
-    .card h2 { color: #102027; }
-    .card p { color: #37474f; }
-    .tabs button { color: #546e7a; }
-  }
+  .card h2 { font-size: 1rem; margin: 0 0 .4rem; color: var(--card-h); }
+  .card p { margin: 0; color: var(--card-p); font-size: .95rem; }
+  .contact { margin-top: 1.6rem; color: var(--mut); font-size: .9rem; }
+  a { color: var(--acc); }
 </style>
+<script>
+  /* Tema tercihi ilk boyamadan önce uygulansın (index.html ile aynı anahtar). */
+  (function () {
+    try {
+      var t = localStorage.getItem('ezan-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
   <div class="wrap">
-    <nav class="home"><a id="home-link" href="index.html">← Vakit Saat</a></nav>
+    <nav class="home"><a id="home-link" href="index.html">← Ezan Vakti</a><button class="theme-btn" id="themeBtn" aria-label="Tema">🌙</button></nav>
     <nav class="tabs" role="tablist">
       <button id="tab-tr" class="active" onclick="show('tr')">Türkçe</button>
       <button id="tab-en" onclick="show('en')">English</button>
@@ -53,7 +82,7 @@
     </nav>
       <div id="page-tr" class="page" lang="tr">
         <h1>GİZLİLİK POLİTİKASI VE KİŞİSEL VERİLERİN KORUNMASI AYDINLATMA METNİ</h1>
-        <p class="meta">Son güncelleme: 24.09.2026 · Vakit Saat</p>
+        <p class="meta">Son güncelleme: 24.09.2026 · Ezan Vakti</p>
 
         <section class="card">
           <h2>Veri İşleme Prensibi</h2>
@@ -88,7 +117,7 @@
       </div>
       <div id="page-en" class="page" lang="en">
         <h1>PRIVACY POLICY AND PERSONAL DATA PROTECTION NOTICE</h1>
-        <p class="meta">Last updated: 24.09.2026 · Vakit Saat</p>
+        <p class="meta">Last updated: 24.09.2026 · Ezan Vakti</p>
 
         <section class="card">
           <h2>Data Processing Principle</h2>
@@ -123,7 +152,7 @@
       </div>
       <div id="page-ar" class="page" dir="rtl" lang="ar">
         <h1>سياسة الخصوصية وإشعار حماية البيانات الشخصية</h1>
-        <p class="meta">آخر تحديث: 24.09.2026 · وقت الصلاة</p>
+        <p class="meta">آخر تحديث: 24.09.2026 · Ezan Vakti</p>
 
         <section class="card">
           <h2>مبدأ معالجة البيانات</h2>
@@ -168,6 +197,18 @@
     }
     var q = new URLSearchParams(location.search).get('l');
     show(['tr','en','ar'].includes(q) ? q : 'tr');
+
+    /* ---------- theme (index.html ile aynı) ---------- */
+    var tbtn = document.getElementById('themeBtn');
+    function applyTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      tbtn.textContent = t === 'dark' ? '🌙' : '☀️';
+      try { localStorage.setItem('ezan-theme', t); } catch (e) {}
+    }
+    applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+    tbtn.addEventListener('click', function () {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
   </script>
 </body>
 </html>

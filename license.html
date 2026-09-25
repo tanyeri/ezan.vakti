@@ -1,56 +1,89 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1016" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f9fb" media="(prefers-color-scheme: light)">
 <title>Ezan Vakti — Lisans ve Kullanım Koşulları</title>
 <meta name="description" content="End User Licence Agreement — Ezan Vakti smartwatch app.">
 <style>
-  :root { color-scheme: light dark; }
+  /* THEME TOKENS — index.html ile aynı anahtar (localStorage 'ezan-theme'). */
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#0b1016; --fg:#eceff1; --card:#101820; --line:#223140;
+    --mut:#90a4ae; --tab-bg:#101820; --tab-fg:#90a4ae; --tab-line:#223140;
+    --tab-act-bg:#12222f; --act:#4da8da; --acc:#4da8da;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg:#f7f9fb; --fg:#1c2733; --card:#ffffff; --line:#dde5ec;
+    --mut:#546e7a; --tab-bg:#ffffff; --tab-fg:#546e7a; --tab-line:#d5dee6;
+    --tab-act-bg:#e8f2fa; --act:#1673b1; --acc:#1673b1;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", sans-serif;
-         line-height: 1.65; background: #0b1016; color: #eceff1; padding: 24px 16px; }
-  @media (prefers-color-scheme: light) {
-    body { background: #f7f9fb; color: #1c2733; } .card { background:#fff !important; border-color:#dde5ec !important; }
-  }
+         line-height: 1.65; background: var(--bg); color: var(--fg); padding: 24px 16px;
+         transition: background .35s ease, color .35s ease; }
   .wrap { max-width: 760px; margin: 0 auto; }
   h1 { font-size: 1.5rem; margin-bottom: 4px; }
-  .home a { color: #4da8da; text-decoration: none; font-size: .9rem; }
+  .home { display: flex; align-items: center; justify-content: space-between; }
+  .home a { color: var(--acc); text-decoration: none; font-size: .9rem; }
+  .theme-btn {
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: .95rem;
+    background: var(--card); border: 1px solid var(--line); color: var(--fg);
+    display: grid; place-items: center; transition: .25s;
+  }
+  .theme-btn:hover { border-color: var(--acc); transform: rotate(20deg); }
   .tabs { margin: 18px 0 8px; display: flex; gap: 6px; }
-  .tabs button { background: #101820; color: #90a4ae; border: 1px solid #223140;
+  .tabs button { background: var(--tab-bg); color: var(--tab-fg); border: 1px solid var(--tab-line);
                  padding: 6px 16px; border-radius: 18px; cursor: pointer; font-size: .9rem; }
-  .tabs button.active { background: #12222f; color: #4da8da; border-color: #4da8da; font-weight: 700; }
-  .card { background: #101820; border: 1px solid #223140; border-radius: 14px;
-          padding: 18px 20px; margin: 14px 0; }
-  .card h2 { font-size: 1.02rem; margin-bottom: 8px; color: #4da8da; }
+  .tabs button.active { background: var(--tab-act-bg); color: var(--act); border-color: var(--act); font-weight: 700; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+          padding: 18px 20px; margin: 14px 0;
+          transition: background .35s ease, border-color .35s ease; }
+  .card h2 { font-size: 1.02rem; margin-bottom: 8px; color: var(--act); }
   .card p { font-size: .95rem; white-space: pre-line; }
   .contact { margin-top: 22px; font-size: .9rem; opacity: .85; }
-  a { color: #4da8da; }
+  .updated { font-size: .85rem; opacity: .6; margin-bottom: 14px; }
+  a { color: var(--acc); }
   footer { text-align: center; font-size: .82rem; opacity: .6; margin-top: 26px; }
   [hidden] { display: none; }
 </style>
+<script>
+  /* Tema tercihi ilk boyamadan önce uygulansın (index.html ile aynı anahtar). */
+  (function () {
+    try {
+      var t = localStorage.getItem('ezan-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
   <div class="wrap">
-    <nav class="home"><a id="home-link" href="index.html">← Vakit Saat</a></nav>
+    <nav class="home"><a id="home-link" href="index.html">← Ezan Vakti</a><button class="theme-btn" id="themeBtn" aria-label="Tema">🌙</button></nav>
     <nav class="tabs" role="tablist">
       <button id="tab-tr" class="active" onclick="show('tr')">Türkçe</button>
       <button id="tab-en" class="" onclick="show('en')">English</button>
       <button id="tab-ar" class="" onclick="show('ar')">العربية</button>
     </nav>
-    <div id="page-tr" class="page"><h1>SON KULLANICI LİSANS VE KULLANIM KOŞULLARI</h1><div class="card"><h2>Lisansın Niteliği ve Kapsamı</h2><p>Uygulamanın uyumlu Huawei akıllı saat modellerinde şahsi ve ticari olmayan amaçlarla çalıştırılması için münhasır olmayan, devredilemez, alt lisans verilemez ve feshedilebilir sınırlı bir kullanım lisansı tanınır. Uygulamanın cihaza kurulması bu koşulların kabulü anlamına gelir.</p></div>
+    <div id="page-tr" class="page"><h1>SON KULLANICI LİSANS VE KULLANIM KOŞULLARI</h1><p class="updated">Son güncelleme: 20.09.2026</p><div class="card"><h2>Lisansın Niteliği ve Kapsamı</h2><p>Uygulamanın uyumlu Huawei akıllı saat modellerinde şahsi ve ticari olmayan amaçlarla çalıştırılması için münhasır olmayan, devredilemez, alt lisans verilemez ve feshedilebilir sınırlı bir kullanım lisansı tanınır. Uygulamanın cihaza kurulması bu koşulların kabulü anlamına gelir.</p></div>
 <div class="card"><h2>Fikri Mülkiyet</h2><p>Kaynak kodu, arayüz tasarımı, grafik bileşenler, algoritmik hesaplama yapıları ve marka unsurları üzerindeki telif hakları 5846 sayılı Fikir ve Sanat Eserleri Kanunu ile uluslararası fikri mülkiyet mevzuatı kapsamında geliştiriciye aittir.</p></div>
 <div class="card"><h2>Kullanım Sınırlamaları</h2><p>Kullanıcı; yazılımı tersine mühendislik veya kaynak koda dönüştürme yöntemleriyle çözmeyeceğini, güvenlik önlemlerini aşmaya çalışmayacağını ve uygulama verilerini otomatik yollarla harici mecralara çekmeyeceğini kabul eder.</p></div>
 <div class="card"><h2>AppGallery Ekosistem Şartı</h2><p>Kullanıcı; sözleşmenin geliştirici ile akdedildiğini, Huawei Technologies Co., Ltd. ve bağlı iştiraklerinin uygulamanın işleyişinden, bakımından, garanti taahhütlerinden veya telif ihlali iddialarından sorumlu tutulamayacağını kabul eder. Huawei bu sözleşmenin üçüncü taraf lehtarıdır.</p></div>
       <p class="contact">Veri sorumlusu — <a href="mailto:tanyeri.soft@gmail.com">tanyeri.soft@gmail.com</a></p>
     </div>
-    <div id="page-en" class="page"><h1>END USER LICENCE AGREEMENT</h1><div class="card"><h2>Licence Nature and Scope</h2><p>You are granted a non-exclusive, non-transferable, non-sublicensable and revocable limited licence to run the app on compatible Huawei smartwatch models for personal, non-commercial purposes. Installing the app on the device means accepting these terms.</p></div>
+    <div id="page-en" class="page"><h1>END USER LICENCE AGREEMENT</h1><p class="updated">Last updated: 20.09.2026</p><div class="card"><h2>Licence Nature and Scope</h2><p>You are granted a non-exclusive, non-transferable, non-sublicensable and revocable limited licence to run the app on compatible Huawei smartwatch models for personal, non-commercial purposes. Installing the app on the device means accepting these terms.</p></div>
 <div class="card"><h2>Intellectual Property</h2><p>Copyright in the source code, interface design, graphic components, algorithmic calculation structures and brand elements belongs to the developer under Turkish Law No. 5846 on Intellectual and Artistic Works and international intellectual property legislation.</p></div>
 <div class="card"><h2>Usage Restrictions</h2><p>The user agrees not to reverse-engineer or decompile the software, not to attempt to bypass its security measures, and not to extract app data to external platforms by automated means.</p></div>
 <div class="card"><h2>AppGallery Ecosystem Clause</h2><p>The user accepts that this agreement is concluded with the developer, and that Huawei Technologies Co., Ltd. and its affiliates cannot be held responsible for the operation, maintenance, warranty commitments or copyright-infringement claims of the app. Huawei is a third-party beneficiary of this agreement.</p></div>
       <p class="contact">Data controller — <a href="mailto:tanyeri.soft@gmail.com">tanyeri.soft@gmail.com</a></p>
     </div>
-    <div id="page-ar" class="page" dir="rtl"><h1>اتفاقية ترخيص المستخدم النهائي</h1><div class="card"><h2>طبيعة الترخيص ونطاقه</h2><p>يُمنح المستخدم ترخيصًا محدودًا غير حصري وغير قابل للنقل أو الترخيص الفرعي وقابلًا للإلغاء لتشغيل التطبيق على ساعات هواوي المتوافقة لأغراض شخصية غير تجارية. ويُعدّ تثبيت التطبيق على الجهاز قبولًا لهذه الشروط.</p></div>
+    <div id="page-ar" class="page" dir="rtl"><h1>اتفاقية ترخيص المستخدم النهائي</h1><p class="updated">آخر تحديث: 20.09.2026</p><div class="card"><h2>طبيعة الترخيص ونطاقه</h2><p>يُمنح المستخدم ترخيصًا محدودًا غير حصري وغير قابل للنقل أو الترخيص الفرعي وقابلًا للإلغاء لتشغيل التطبيق على ساعات هواوي المتوافقة لأغراض شخصية غير تجارية. ويُعدّ تثبيت التطبيق على الجهاز قبولًا لهذه الشروط.</p></div>
 <div class="card"><h2>الملكية الفكرية</h2><p>تعود حقوق النشر على الشفرة المصدرية وتصميم الواجهة والعناصر الرسومية وبنى الحساب وعناصر العلامة إلى المطوّر وفق القانون التركي رقم 5846 والتشريعات الدولية للملكية الفكرية.</p></div>
 <div class="card"><h2>قيود الاستخدام</h2><p>يتعهد المستخدم بعدم إجراء هندسة عكسية أو تفكيك للبرنامج، وعدم محاولة تجاوز تدابير الحماية، وعدم استخراج بيانات التطبيق إلى جهات خارجية بوسائل آلية.</p></div>
 <div class="card"><h2>شرط منظومة AppGallery</h2><p>يقرّ المستخدم بأن هذه الاتفاقية مبرمة مع المطوّر، وأن شركة هواوي وشركاتها التابعة لا يمكن مساءلتها عن تشغيل التطبيق أو صيانته أو التزامات الضمان أو أي ادعاء بانتهاك حقوق النشر. وتُعدّ هواوي طرفًا مستفيدًا في هذه الاتفاقية.</p></div>
@@ -70,6 +103,18 @@
     var LANGS_OK = ['tr', 'en', 'ar'];
     var q = new URLSearchParams(location.search).get('l');
     show(LANGS_OK.indexOf(q) >= 0 ? q : 'tr');
+
+    /* ---------- theme (index.html ile aynı) ---------- */
+    var tbtn = document.getElementById('themeBtn');
+    function applyTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      tbtn.textContent = t === 'dark' ? '🌙' : '☀️';
+      try { localStorage.setItem('ezan-theme', t); } catch (e) {}
+    }
+    applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+    tbtn.addEventListener('click', function () {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
   </script>
 </body>
 </html>
